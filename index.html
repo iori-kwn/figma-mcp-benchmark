@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma MCP Benchmark</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 1rem;
+        }
+        .experiment-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .experiment-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #007acc;
+        }
+        .experiment-item h3 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+        .experiment-item a {
+            color: #007acc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .experiment-item a:hover {
+            text-decoration: underline;
+        }
+        .description {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Figma MCP Benchmark</h1>
+    <p>This repository contains various experiments comparing different configurations for Figma MCP code generation.</p>
+    
+    <div class="experiment-list">
+        <div class="experiment-item">
+            <h3>cN_gN_lN</h3>
+            <p class="description">Code: No, Generate: No, Library: No</p>
+            <a href="/experiments/cN_gN_lN/src/">View Experiment →</a>
+        </div>
+        
+        <div class="experiment-item">
+            <h3>cN_gY</h3>
+            <p class="description">Code: No, Generate: Yes</p>
+            <a href="/experiments/cN_gY/src/">View Experiment →</a>
+        </div>
+        
+        <div class="experiment-item">
+            <h3>cY_gN</h3>
+            <p class="description">Code: Yes, Generate: No</p>
+            <a href="/experiments/cY_gN/src/">View Experiment →</a>
+        </div>
+        
+        <div class="experiment-item">
+            <h3>cY_gY_vN</h3>
+            <p class="description">Code: Yes, Generate: Yes, Vite: No</p>
+            <a href="/experiments/cY_gY_vN/src/">View Experiment →</a>
+        </div>
+        
+        <div class="experiment-item">
+            <h3>cY_gY_vY_lN</h3>
+            <p class="description">Code: Yes, Generate: Yes, Vite: Yes, Library: No</p>
+            <a href="/experiments/cY_gY_vY_lN/">View Experiment →</a>
+        </div>
+        
+        <div class="experiment-item">
+            <h3>cY_gY_vY_lY</h3>
+            <p class="description">Code: Yes, Generate: Yes, Vite: Yes, Library: Yes</p>
+            <a href="/experiments/cY_gY_vY_lY/">View Experiment →</a>
+        </div>
+    </div>
+
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; color: #666; font-size: 0.9rem;">
+        <p>📊 Compare different Figma MCP configurations and their generated code quality.</p>
+        <p>🔗 <a href="https://github.com/iori-kwn/figma-mcp-benchmark" style="color: #007acc;">View on GitHub</a></p>
+    </div>
+</body>
+</html>
