@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail Page - Figma to Code</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Asset imports - these would be the actual image files in production
+        const imgShape = "data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23E5E5E5'/%3E%3C/svg%3E";
+        const imgFigma = "data:image/svg+xml,%3Csvg width='40' height='35' viewBox='0 0 40 35' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3333 0H26.6667C31.2667 0 35 3.73333 35 8.33333C35 12.9333 31.2667 16.6667 26.6667 16.6667H20V8.33333C20 3.73333 16.2667 0 11.6667 0H13.3333Z' fill='%23F24E1E'/%3E%3Cpath d='M0 8.33333C0 3.73333 3.73333 0 8.33333 0H13.3333V16.6667H8.33333C3.73333 16.6667 0 12.9333 0 8.33333Z' fill='%23FF7262'/%3E%3Cpath d='M0 26.6667C0 22.0667 3.73333 18.3333 8.33333 18.3333H13.3333V35H8.33333C3.73333 35 0 31.2667 0 26.6667Z' fill='%230ACF83'/%3E%3Cpath d='M13.3333 18.3333H26.6667C31.2667 18.3333 35 22.0667 35 26.6667C35 31.2667 31.2667 35 26.6667 35H13.3333V18.3333Z' fill='%231ABCFE'/%3E%3Cpath d='M35 8.33333C35 12.9333 31.2667 16.6667 26.6667 16.6667C22.0667 16.6667 18.3333 12.9333 18.3333 8.33333C18.3333 3.73333 22.0667 0 26.6667 0C31.2667 0 35 3.73333 35 8.33333Z' fill='%23A259FF'/%3E%3C/svg%3E";
+        const imgMenu = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6H17M3 12H17M3 18H17' stroke='%23000000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E";
+        const imgChevronDown = "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+        const imgChevronUp = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 12L10 7L5 12' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+        const imgHeart = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.3667 3.84167C16.9885 3.46394 16.5426 3.16365 16.0532 2.95938C15.5638 2.75511 15.0403 2.65039 14.5125 2.65039C13.9847 2.65039 13.4612 2.75511 12.9718 2.95938C12.4824 3.16365 12.0365 3.46394 11.6583 3.84167L10.8333 4.66667L10.0083 3.84167C9.24613 3.07948 8.21795 2.65088 7.15 2.65088C6.08205 2.65088 5.05387 3.07948 4.29167 3.84167C3.52947 4.60387 3.10088 5.63205 3.10088 6.7C3.10088 7.76795 3.52947 8.79613 4.29167 9.55833L5.11667 10.3833L10.8333 16.1L16.55 10.3833L17.375 9.55833C17.7527 9.18015 18.053 8.73421 18.2573 8.24482C18.4615 7.75544 18.5663 7.23194 18.5663 6.70417C18.5663 6.1764 18.4615 5.6529 18.2573 5.16351C18.053 4.67413 17.7527 4.22819 17.3667 3.85V3.84167Z' fill='white' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+        const imgStar = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 2L12.09 6.26L17 7L13.5 10.74L14.18 16L10 13.77L5.82 16L6.5 10.74L3 7L7.91 6.26L10 2Z' fill='%23FFD700' stroke='%23FFD700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+        const imgFigma1 = imgFigma;
+        const imgXLogo = "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' fill='%23000'/%3E%3C/svg%3E";
+        const imgLogoInstagram = "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2z' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M17.5 6.5h.01' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E";
+        const imgLogoYouTube = "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z' fill='%23FF0000'/%3E%3Cpolygon points='9.75,15.02 15.5,11.75 9.75,8.48' fill='%23FFFFFF'/%3E%3C/svg%3E";
+        const imgLinkedIn = "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z' fill='%230077B5'/%3E%3Crect x='2' y='9' width='4' height='12' fill='%230077B5'/%3E%3Ccircle cx='4' cy='4' r='2' fill='%230077B5'/%3E%3C/svg%3E";
+
+        const ProductDetailPage = () => {
+          return (
+            <div className="bg-white content-stretch flex flex-col items-start justify-start relative size-full" data-name="Examples/Product Detail Page" data-node-id="44:1434">
+              <div className="bg-white relative shrink-0 w-full" data-name="Header" data-node-id="44:1435">
+                <div className="box-border content-center flex flex-wrap items-center justify-between overflow-clip p-[24px] relative w-full">
+                  <div className="content-stretch flex gap-6 items-center justify-start relative shrink-0" data-name="Block" data-node-id="44:1436">
+                    <div className="h-[35px] relative shrink-0 w-10" data-name="Figma" data-node-id="44:1437">
+                      <div className="absolute bottom-[-5%] left-0 right-0 top-[-5%]">
+                        <img alt="" className="block max-w-none size-full" src={imgFigma} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="box-border content-stretch flex items-center justify-center overflow-clip p-[8px] relative rounded-[32px] shrink-0" data-name="Icon Button" data-node-id="44:1457">
+                    <div className="relative shrink-0 size-5" data-name="Menu" data-node-id="44:1458">
+                      <img alt="" className="block max-w-none size-full" src={imgMenu} />
+                    </div>
+                  </div>
+                </div>
+                <div aria-hidden="true" className="absolute border-[#d9d9d9] border-[0px_0px_1px] border-solid inset-0 pointer-events-none" />
+              </div>
+              
+              <div className="bg-white box-border content-stretch flex flex-col gap-6 items-start justify-start min-w-60 p-[24px] relative shrink-0 w-full" data-name="Page Product" data-node-id="44:1462">
+                <div className="content-stretch flex flex-col gap-16 items-start justify-start relative shrink-0 w-full" data-name="Section" data-node-id="44:1463">
+                  <div className="bg-[#e3e3e3] h-[327px] shrink-0 w-full" data-name="Image" data-node-id="44:1464" />
+                  <div className="content-stretch flex flex-col gap-6 items-start justify-center relative shrink-0 w-full" data-name="Column" data-node-id="44:1465">
+                    <div className="content-stretch flex flex-col gap-4 items-start justify-start relative shrink-0 w-full" data-name="Body" data-node-id="44:1466">
+                      <div className="content-stretch flex flex-col gap-4 items-start justify-start relative shrink-0 w-full" data-name="Title" data-node-id="44:1467">
+                        <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text Heading" data-node-id="44:1468">
+                          <div className="font-['Inter'] font-semibold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[24px] text-nowrap tracking-[-0.48px]" data-node-id="44:1469">
+                            <p className="leading-[1.2] whitespace-pre">Text Heading</p>
+                          </div>
+                        </div>
+                        <div className="content-stretch flex flex-col gap-1 items-start justify-center relative shrink-0 w-full" data-name="Price" data-node-id="44:1470">
+                          <div className="bg-[#cff7d3] box-border content-stretch flex gap-2 items-center justify-center p-[8px] relative rounded-[8px] shrink-0" data-name="Tag" data-node-id="44:1471">
+                            <div className="font-['Inter'] font-normal leading-[0] not-italic relative shrink-0 text-[#02542d] text-[16px] text-nowrap" data-node-id="44:1472">
+                              <p className="leading-none whitespace-pre">Tag</p>
+                            </div>
+                          </div>
+                          <div className="content-stretch flex items-end justify-center relative shrink-0" data-name="Text Price" data-node-id="44:1475">
+                            <div className="content-stretch flex font-['Inter'] font-bold items-start justify-start leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-nowrap" data-name="Price" data-node-id="44:1476">
+                              <div className="relative shrink-0 text-[24px] tracking-[-0.48px]" data-node-id="44:1477">
+                                <p className="leading-none text-nowrap whitespace-pre">$</p>
+                              </div>
+                              <div className="relative shrink-0 text-[48px] tracking-[-0.96px]" data-node-id="44:1478">
+                                <p className="leading-none text-nowrap whitespace-pre">50</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text" data-node-id="44:1480">
+                        <div className="basis-0 font-['Inter'] font-normal grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#757575] text-[16px]" data-node-id="44:1481">
+                          <p className="leading-[1.4]">Text</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="content-stretch flex flex-col gap-4 items-start justify-center relative shrink-0 w-full" data-name="Fields" data-node-id="44:1482">
+                      <div className="content-stretch flex flex-col gap-2 items-start justify-start relative shrink-0 w-full" data-name="Select Field" data-node-id="44:1483">
+                        <div className="font-['Inter'] font-normal leading-[0] min-w-full not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1484" style={{ width: "min-content" }}>
+                          <p className="leading-[1.4]">Label</p>
+                        </div>
+                        <div className="bg-white box-border content-stretch flex gap-2 h-10 items-center justify-start min-w-60 px-4 py-3 relative rounded-[8px] shrink-0 w-full" data-name="Select" data-node-id="44:1486">
+                          <div aria-hidden="true" className="absolute border border-[#d9d9d9] border-solid inset-[-0.5px] pointer-events-none rounded-[8.5px]" />
+                          <div className="basis-0 font-['Inter'] font-normal grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1487">
+                            <p className="leading-none">Value</p>
+                          </div>
+                          <div className="relative shrink-0 size-4" data-name="Chevron down" data-node-id="44:1488">
+                            <img alt="" className="block max-w-none size-full" src={imgChevronDown} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="content-stretch flex flex-col gap-2 items-start justify-start relative shrink-0 w-full" data-name="Select Field" data-node-id="44:1502">
+                        <div className="font-['Inter'] font-normal leading-[0] min-w-full not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1503" style={{ width: "min-content" }}>
+                          <p className="leading-[1.4]">Label</p>
+                        </div>
+                        <div className="bg-white box-border content-stretch flex gap-2 h-10 items-center justify-start min-w-60 px-4 py-3 relative rounded-[8px] shrink-0 w-full" data-name="Select" data-node-id="44:1505">
+                          <div aria-hidden="true" className="absolute border border-[#d9d9d9] border-solid inset-[-0.5px] pointer-events-none rounded-[8.5px]" />
+                          <div className="basis-0 font-['Inter'] font-normal grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1506">
+                            <p className="leading-none">Value</p>
+                          </div>
+                          <div className="relative shrink-0 size-4" data-name="Chevron down" data-node-id="44:1507">
+                            <img alt="" className="block max-w-none size-full" src={imgChevronDown} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-[#2c2c2c] relative rounded-[8px] shrink-0 w-full" data-name="Button" data-node-id="44:1521">
+                      <div className="box-border content-stretch flex gap-2 items-center justify-center overflow-clip p-[12px] relative w-full">
+                        <div className="font-['Inter'] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-neutral-100 text-nowrap" data-node-id="44:1524">
+                          <p className="leading-none whitespace-pre">Button</p>
+                        </div>
+                      </div>
+                      <div aria-hidden="true" className="absolute border border-[#2c2c2c] border-solid inset-0 pointer-events-none rounded-[8px]" />
+                    </div>
+                    <div className="content-stretch flex flex-col gap-4 items-start justify-start max-w-[640px] relative shrink-0 w-full" data-name="Accordion" data-node-id="44:1527">
+                      <div className="bg-white box-border content-stretch flex flex-col gap-2 items-start justify-start p-[16px] relative rounded-[8px] shrink-0 w-full" data-name="Accordion Item" data-node-id="44:1528">
+                        <div aria-hidden="true" className="absolute border border-[#d9d9d9] border-solid inset-0 pointer-events-none rounded-[8px]" />
+                        <div className="content-stretch flex gap-2 items-center justify-start relative shrink-0 w-full" data-name="Accordion Title" data-node-id="44:1529">
+                          <div className="basis-0 font-['Inter'] font-semibold grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1530">
+                            <p className="leading-[1.4]">Title</p>
+                          </div>
+                          <div className="relative shrink-0 size-5" data-name="Chevron up" data-node-id="44:1531">
+                            <img alt="" className="block max-w-none size-full" src={imgChevronUp} />
+                          </div>
+                        </div>
+                        <div className="content-stretch flex items-center justify-center relative shrink-0 w-full" data-name="Accordion Content" data-node-id="44:1533">
+                          <div className="basis-0 flex flex-col font-['Inter'] font-normal grow justify-center leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px]" data-node-id="44:1534">
+                            <p className="leading-[1.4]">Answer the frequently asked question in a simple sentence, a longish paragraph, or even in a list.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute bg-[#2c2c2c] left-2.5 rounded-[32px] top-2.5" data-name="Icon Button" data-node-id="44:1570">
+                    <div className="box-border content-stretch flex items-center justify-center overflow-clip p-[8px] relative">
+                      <div className="relative shrink-0 size-5" data-name="Heart" data-node-id="44:1571">
+                        <img alt="" className="block max-w-none size-full" src={imgHeart} />
+                      </div>
+                    </div>
+                    <div aria-hidden="true" className="absolute border border-[#2c2c2c] border-solid inset-0 pointer-events-none rounded-[32px]" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white box-border content-stretch flex flex-col gap-6 items-start justify-start p-[24px] relative shrink-0 w-full" data-name="Card Grid Reviews" data-node-id="44:1573">
+                <div className="content-stretch flex items-start justify-start relative shrink-0" data-name="Text Heading" data-node-id="44:1574">
+                  <div className="font-['Inter'] font-semibold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[24px] text-nowrap tracking-[-0.48px]" data-node-id="44:1575">
+                    <p className="leading-[1.2] whitespace-pre">Latest reviews</p>
+                  </div>
+                </div>
+                <div className="content-start flex flex-wrap gap-6 items-start justify-start relative shrink-0 w-full" data-name="Card Grid" data-node-id="44:1576">
+                  {[1, 2, 3].map((index) => (
+                    <div key={index} className="basis-0 bg-white box-border content-stretch flex flex-col gap-6 grow items-start justify-start min-h-px min-w-60 p-[24px] relative rounded-[8px] shrink-0" data-name="Review Card">
+                      <div aria-hidden="true" className="absolute border border-[#d9d9d9] border-solid inset-0 pointer-events-none rounded-[8px]" />
+                      <div className="content-stretch flex gap-1 items-center justify-start relative shrink-0" data-name="Rating">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <div key={star} className="relative shrink-0 size-5" data-name="Star">
+                            <img alt="" className="block max-w-none size-full" src={imgStar} />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="content-stretch flex flex-col gap-1 items-start justify-start relative shrink-0 w-full" data-name="Review Body">
+                        <div className="content-stretch flex items-start justify-start relative shrink-0" data-name="Text Heading">
+                          <div className="font-['Inter'] font-semibold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[24px] text-nowrap tracking-[-0.48px]">
+                            <p className="leading-[1.2] whitespace-pre">Review title</p>
+                          </div>
+                        </div>
+                        <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text">
+                          <div className="basis-0 font-['Inter'] font-normal grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px]">
+                            <p className="leading-[1.4]">Review body</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="content-stretch flex gap-3 items-start justify-start relative shrink-0 w-full" data-name="Avatar Block">
+                        <div className="overflow-clip relative rounded-[9999px] shrink-0 size-10" data-name="Avatar">
+                          <div className="absolute bg-center bg-cover bg-no-repeat left-1/2 size-10 top-1/2 translate-x-[-50%] translate-y-[-50%]" data-name="Shape" style={{ backgroundImage: `url('${imgShape}')` }} />
+                        </div>
+                        <div className="basis-0 content-stretch flex flex-col gap-0.5 grow items-start justify-start leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px]" data-name="Info">
+                          <div className="flex flex-col font-['Inter'] font-semibold justify-center relative shrink-0 text-[#757575] w-full">
+                            <p className="leading-[1.4]">Reviewer name</p>
+                          </div>
+                          <div className="flex flex-col font-['Inter'] font-normal justify-center relative shrink-0 text-[#b3b3b3] w-full">
+                            <p className="leading-[1.4]">Date</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-white box-border content-stretch flex flex-col gap-6 items-center justify-start p-[24px] relative shrink-0 w-full" data-name="Page Newsletter" data-node-id="44:1646">
+                <div className="content-stretch flex flex-col gap-2 items-center justify-start leading-[0] not-italic relative shrink-0 text-center w-full" data-name="Text Content Heading" data-node-id="44:1647">
+                  <div className="font-['Inter'] font-semibold relative shrink-0 text-[#1e1e1e] text-[24px] tracking-[-0.48px] w-full" data-node-id="44:1648">
+                    <p className="leading-[1.2]">Follow the latest trends</p>
+                  </div>
+                  <div className="flex flex-col font-['Inter'] font-normal justify-center relative shrink-0 text-[#757575] text-[20px] w-full" data-node-id="44:1649">
+                    <p className="leading-[1.2]">With our daily newsletter</p>
+                  </div>
+                </div>
+                <div className="content-stretch flex gap-3 items-start justify-start relative shrink-0 w-full" data-name="Form Newsletter" data-node-id="44:1650">
+                  <div className="basis-0 content-stretch flex flex-col gap-2 grow items-start justify-start min-h-px min-w-px relative shrink-0" data-name="Input Field" data-node-id="44:1651">
+                    <div className="bg-white min-w-60 relative rounded-[8px] shrink-0 w-full" data-name="Input" data-node-id="44:1654">
+                      <div className="box-border content-stretch flex items-center justify-start min-w-inherit overflow-clip px-4 py-3 relative w-full">
+                        <input 
+                          type="email" 
+                          placeholder="you@example.com" 
+                          className="basis-0 font-['Inter'] font-normal grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1e1e1e] text-[16px] bg-transparent border-none outline-none"
+                        />
+                      </div>
+                      <div aria-hidden="true" className="absolute border border-[#d9d9d9] border-solid inset-[-0.5px] pointer-events-none rounded-[8.5px]" />
+                    </div>
+                  </div>
+                  <div className="bg-[#2c2c2c] relative rounded-[8px] shrink-0 cursor-pointer hover:bg-[#333]" data-name="Button" data-node-id="44:1657">
+                    <div className="box-border content-stretch flex gap-2 items-center justify-center overflow-clip p-[12px] relative">
+                      <div className="font-['Inter'] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-neutral-100 text-nowrap" data-node-id="44:1660">
+                        <p className="leading-none whitespace-pre">Submit</p>
+                      </div>
+                    </div>
+                    <div aria-hidden="true" className="absolute border border-[#2c2c2c] border-solid inset-0 pointer-events-none rounded-[8px]" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white relative shrink-0 w-full" data-name="Footer" data-node-id="44:1663">
+                <div className="box-border content-stretch flex flex-col gap-16 items-start justify-start overflow-clip p-[32px] relative w-full">
+                  <div className="content-stretch flex items-center justify-between min-w-60 relative shrink-0 w-full" data-name="Title" data-node-id="44:1664">
+                    <div className="h-[35px] relative shrink-0 w-[23.333px]" data-name="Figma" data-node-id="44:1665">
+                      <div className="absolute inset-[-5%_-7.5%]">
+                        <img alt="" className="block max-w-none size-full" src={imgFigma1} />
+                      </div>
+                    </div>
+                    <div className="content-stretch flex gap-4 items-center justify-start relative shrink-0" data-name="Button List" data-node-id="44:1667">
+                      <div className="h-6 relative shrink-0 w-[23.98px]" data-name="X Logo" data-node-id="44:1668">
+                        <img alt="" className="block max-w-none size-full" src={imgXLogo} />
+                      </div>
+                      <div className="relative shrink-0 size-6" data-name="Logo Instagram" data-node-id="44:1670">
+                        <img alt="" className="block max-w-none size-full" src={imgLogoInstagram} />
+                      </div>
+                      <div className="relative shrink-0 size-6" data-name="Logo YouTube" data-node-id="44:1672">
+                        <img alt="" className="block max-w-none size-full" src={imgLogoYouTube} />
+                      </div>
+                      <div className="relative shrink-0 size-6" data-name="LinkedIn" data-node-id="44:1674">
+                        <img alt="" className="block max-w-none size-full" src={imgLinkedIn} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="content-stretch flex flex-col gap-6 items-start justify-start relative shrink-0 w-full" data-name="Links" data-node-id="44:1676">
+                    <div className="content-stretch flex flex-col gap-2 items-start justify-start relative shrink-0 w-full" data-name="Text Link List" data-node-id="44:1677">
+                      <div className="box-border content-stretch flex flex-col gap-2.5 items-start justify-start pb-1 pt-0 px-0 relative shrink-0 w-full" data-name="Title" data-node-id="44:1678">
+                        <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text Strong" data-node-id="44:1679">
+                          <div className="font-['Inter'] font-bold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[16px] text-nowrap" data-node-id="44:1680">
+                            <p className="leading-[1.4] whitespace-pre">Use cases</p>
+                          </div>
+                        </div>
+                      </div>
+                      {['UI design', 'UX design', 'Wireframing', 'Diagramming', 'Brainstorming', 'Online whiteboard', 'Team collaboration'].map((item, index) => (
+                        <div key={index} className="h-[22px] relative shrink-0 w-full" data-name="Text Link List Item">
+                          <div className="absolute bottom-0 flex flex-col font-['Inter'] font-normal justify-center leading-[0] left-0 not-italic text-[#1e1e1e] text-[16px] top-0">
+                            <p className="leading-[1.4]">{item}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="content-stretch flex flex-col gap-2 items-start justify-start relative shrink-0 w-full" data-name="Text Link List" data-node-id="44:1695">
+                      <div className="box-border content-stretch flex flex-col gap-2.5 items-start justify-start pb-1 pt-0 px-0 relative shrink-0 w-full" data-name="Title" data-node-id="44:1696">
+                        <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text Strong" data-node-id="44:1697">
+                          <div className="font-['Inter'] font-bold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[16px] text-nowrap" data-node-id="44:1698">
+                            <p className="leading-[1.4] whitespace-pre">Explore</p>
+                          </div>
+                        </div>
+                      </div>
+                      {['Design', 'Prototyping', 'Development features', 'Design systems', 'Collaboration features', 'Design process', 'FigJam'].map((item, index) => (
+                        <div key={index} className="h-[22px] relative shrink-0 w-full" data-name="Text Link List Item">
+                          <div className="absolute bottom-0 flex flex-col font-['Inter'] font-normal justify-center leading-[0] left-0 not-italic text-[#1e1e1e] text-[16px] top-0">
+                            <p className="leading-[1.4]">{item}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="content-stretch flex flex-col gap-2 items-start justify-start relative shrink-0 w-full" data-name="Text Link List" data-node-id="44:1713">
+                      <div className="box-border content-stretch flex flex-col gap-2.5 items-start justify-start pb-1 pt-0 px-0 relative shrink-0 w-full" data-name="Title" data-node-id="44:1714">
+                        <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" data-name="Text Strong" data-node-id="44:1715">
+                          <div className="font-['Inter'] font-bold leading-[0] not-italic relative shrink-0 text-[#1e1e1e] text-[16px] text-nowrap" data-node-id="44:1716">
+                            <p className="leading-[1.4] whitespace-pre">Resources</p>
+                          </div>
+                        </div>
+                      </div>
+                      {['Blog', 'Best practices', 'Colors', 'Color wheel', 'Support', 'Developers', 'Resource library'].map((item, index) => (
+                        <div key={index} className="h-[22px] relative shrink-0 w-full" data-name="Text Link List Item">
+                          <div className="absolute bottom-0 flex flex-col font-['Inter'] font-normal justify-center leading-[0] left-0 not-italic text-[#1e1e1e] text-[16px] top-0">
+                            <p className="leading-[1.4]">{item}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div aria-hidden="true" className="absolute border-[#d9d9d9] border-[1px_0px_0px] border-solid inset-0 pointer-events-none" />
+              </div>
+            </div>
+          );
+        };
+
+        // Render the component
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ProductDetailPage />);
+    </script>
+</body>
+</html>

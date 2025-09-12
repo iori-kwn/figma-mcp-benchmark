@@ -1,0 +1,274 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Component showcase sections */
+.component-showcase {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.component-showcase h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+/* Button Components */
+.button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #4f46e5;
+  border: 2px solid #4f46e5;
+}
+
+.btn-outline:hover {
+  background-color: #4f46e5;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-disabled {
+  background-color: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 12px;
+  min-width: 80px;
+}
+
+/* Form Components */
+.input-group {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.form-field input,
+.form-field select {
+  padding: 12px 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-field input::placeholder {
+  color: #9ca3af;
+}
+
+/* Card Components */
+.card-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.card-header h3 {
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.card-body {
+  padding: 16px 24px;
+  color: #6b7280;
+}
+
+.card-footer {
+  padding: 16px 24px 20px;
+  background-color: #f9fafb;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* Typography */
+.typography-demo h1,
+.typography-demo h2,
+.typography-demo h3,
+.typography-demo h4 {
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+.typography-demo h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.typography-demo h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.typography-demo h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.typography-demo h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.text-large {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.text-normal {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: #4b5563;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .input-group {
+    grid-template-columns: 1fr;
+  }
+}
